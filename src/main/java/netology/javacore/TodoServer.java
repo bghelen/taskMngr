@@ -29,13 +29,16 @@ public class TodoServer {
                              new InputStreamReader(socket.getInputStream()));
                      PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
                     String json = in.readLine();
+                    System.out.println(json);
 
                     JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
                      String type = jsonObject.get("type").toString();
                      String task = jsonObject.get("task").toString();
 
+                    System.out.println(type);
+                    System.out.println(task);
 
-
+                     out.println(todos.getAllTasks());
                 }
             }
         }
