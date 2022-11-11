@@ -12,17 +12,18 @@ import java.net.Socket;
 
 public class TodoServer {
     private final int PORT;
-    private Todos todos;
+    protected Todos todos;
 
     public TodoServer(int port, Todos todos) {
         this.PORT = port;
         this.todos = todos;
-
     }
 
     public void start() throws IOException {
-        try(ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Starting server at " + PORT + "...");
+            Manager manager = new Manager(todos);
+
             while (true) {
                 try (Socket socket = serverSocket.accept();
                      BufferedReader in = new BufferedReader(
@@ -32,13 +33,16 @@ public class TodoServer {
                     System.out.println(json);
 
                     JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-                     String type = jsonObject.get("type").toString();
-                     String task = jsonObject.get("task").toString();
+                    String type = jsonObject.get("type").getAsString();
 
-                    System.out.println(type);
-                    System.out.println(task);
-
-                     out.println(todos.getAllTasks());
+                    if (type.equals("RESTORE")) {
+                        manager.restore();
+                    } else {
+                        String task = jsonObject.get("task").getAsString();
+                        manager.execute(type, task);
+                    }
+                    String output = todos.getAllTasks();
+                    out.println(output);
                 }
             }
         }

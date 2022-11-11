@@ -1,6 +1,5 @@
 package netology.javacore;
 
-import com.google.gson.JsonObject;
 import org.json.simple.JSONObject;
 
 import java.io.BufferedReader;
@@ -8,28 +7,61 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.List;
-import java.util.Random;
+import java.util.Scanner;
 
 public class Client {
     private static final int PORT = 8989;
     private static final String HOST = "localhost";
-    private static final Random RANDOM = new Random();
+    public static JSONObject jsonObj = new JSONObject();
+    public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        List<String> tasks = List.of("Пробежка", "Акробатика", "Брейк", "Алгоритмы", "Spring", "Docker", "Bash");
-        List<String> commands = List.of("ADD", "REMOVE");
-        JSONObject jsonObj = new JSONObject();
-        jsonObj.put("type", commands.get(RANDOM.nextInt(commands.size())));
-        jsonObj.put("task", tasks.get(RANDOM.nextInt(tasks.size())));
+        StringBuilder sb = new StringBuilder();
+        sb.append("\t1 - добавить задачу\n\t2 - удалить задачу\n");
+        sb.append("\t3 - отменить последнюю операцию (в этом случае название задачи вводить не нужно)\n");
+        sb.append("\nВведите номер операции\n");
 
+        int operation;
+        String task = "";
+        System.out.println(sb);
+        String input = scanner.nextLine();
+        try {
+            operation = Integer.parseInt(input);
+            if (operation == 1 || operation == 2) {
+                System.out.println("Введите название задачи");
+                task = scanner.nextLine();
+            }
+
+            switch (operation) {
+                case 1:
+                    jsonObj.put("type", "ADD");
+                    jsonObj.put("task", task);
+                    break;
+                case 2:
+                    jsonObj.put("type", "REMOVE");
+                    jsonObj.put("task", task);
+                    break;
+                case 3:
+                    jsonObj.put("type", "RESTORE");
+                    break;
+                default:
+                    System.out.println("Проверьте номер операции");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Следует вводить только числа!");
+        }
+        sendMessage();
+    }
+
+    public static void sendMessage() {
         try (Socket socket = new Socket(HOST, PORT);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             PrintWriter out = new PrintWriter(socket.getOutputStream(),true)) {
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
+
             out.println(jsonObj.toJSONString());
 
             String response = in.readLine();
-            System.out.println(response);
+            System.out.println("Ваш список задач: " + response);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,6 @@
 package netology.javacore;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Todos {
     private List<String> tasks;
@@ -35,5 +34,4 @@ public class Todos {
         });
         return sb.toString().trim();
     }
-
 }
