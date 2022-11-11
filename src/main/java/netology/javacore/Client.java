@@ -19,17 +19,17 @@ public class Client {
         StringBuilder sb = new StringBuilder();
         sb.append("\t1 - добавить задачу\n\t2 - удалить задачу\n");
         sb.append("\t3 - отменить последнюю операцию (в этом случае название задачи вводить не нужно)\n");
-        sb.append("\nВведите номер операции\n");
+        sb.append("\nВведите номер операции");
 
         int operation;
         String task = "";
         System.out.println(sb);
-        String input = scanner.nextLine();
+        String input = scanner.nextLine().trim();
         try {
             operation = Integer.parseInt(input);
             if (operation == 1 || operation == 2) {
                 System.out.println("Введите название задачи");
-                task = scanner.nextLine();
+                task = scanner.nextLine().trim();
             }
 
             switch (operation) {

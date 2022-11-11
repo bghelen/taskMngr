@@ -10,15 +10,18 @@ public class Todos {
         tasks = new ArrayList<>(CAPACITY);
     }
 
-    public void addTask(String task) {
+    public boolean addTask(String task) {
         if (tasks.size() < CAPACITY) {
-            if (!tasks.contains(task))
+            if (!tasks.contains(task)) {
                 tasks.add(task);
+                return true;
+            }
         }
+        return false;
     }
 
-    public void removeTask(String task) {
-        tasks.remove(task);
+    public boolean removeTask(String task) {
+        return tasks.remove(task);
     }
 
     public List<String> getTasks() {

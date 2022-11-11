@@ -20,12 +20,14 @@ public class Manager {
     public void execute(String type, String task) {
         switch (type) {
             case "ADD":
-                log(type, task);
-                todos.addTask(task);
+                if (todos.addTask(task)) {
+                    log(type, task);
+                }
                 break;
             case "REMOVE":
-                log(type, task);
-                todos.removeTask(task);
+                if (todos.removeTask(task)) {
+                    log(type, task);
+                }
                 break;
             default:
                 System.out.println("Unexpected value: " + type);

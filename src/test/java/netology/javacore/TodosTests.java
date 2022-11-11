@@ -23,52 +23,53 @@ public class TodosTests {
 
     @DisplayName("Testing addition of a new task")
     @ParameterizedTest
-    @ValueSource(strings = { "Купить продукты", " ", "Oплатить счета" })
+    @ValueSource(strings = {"Купить продукты", "Тренировка", "Oплатить счета"})
     void addTask(String task) {
-        Assertions.assertEquals(6,todos.getTasks().size());
-        todos.addTask(task);
-        Assertions.assertEquals(7,todos.getTasks().size());
+        Assertions.assertEquals(6, todos.getTasks().size());
+        boolean actual = todos.addTask(task);
+        Assertions.assertEquals(7, todos.getTasks().size());
+        Assertions.assertTrue(actual);
     }
 
     @DisplayName("Testing addition of a new task when list is full")
     @ParameterizedTest
-    @ValueSource(strings = { "Купить продукты", " ", "Oплатить счета" })
+    @ValueSource(strings = {"Купить продукты", "Брейк", "Oплатить счета"})
     void addTaskWhenListIsFull(String task) {
         todos.getTasks().add("Выгулять собаку");
-        Assertions.assertEquals(7,todos.getTasks().size());
-
-        todos.addTask(task);
-        Assertions.assertEquals(7,todos.getTasks().size());
+        Assertions.assertEquals(7, todos.getTasks().size());
+        boolean actual = todos.addTask(task);
+        Assertions.assertEquals(7, todos.getTasks().size());
+        Assertions.assertFalse(actual);
     }
 
     @DisplayName("Testing addition of the existing task")
     @ParameterizedTest
-    @ValueSource(strings = { "Стирка", "Покормить кота", "Дописать курсовую", "Уборка" })
+    @ValueSource(strings = {"Стирка", "Дописать курсовую", "Покормить кота", "Уборка"})
     void addTaskExisting(String task) {
-        Assertions.assertEquals(6,todos.getTasks().size());
-
-        todos.addTask(task);
-        Assertions.assertEquals(6,todos.getTasks().size());
+        Assertions.assertEquals(6, todos.getTasks().size());
+        boolean actual = todos.addTask(task);
+        Assertions.assertEquals(6, todos.getTasks().size());
+        Assertions.assertFalse(actual);
     }
 
     @DisplayName("Testing removing of the existing task")
     @ParameterizedTest
-    @ValueSource(strings = { "Стирка", "Покормить кота", "Дописать курсовую", "Уборка" })
+    @ValueSource(strings = {"Стирка", "Покормить кота", "Дописать курсовую", "Уборка"})
     void removeTask(String task) {
-        Assertions.assertEquals(6,todos.getTasks().size());
-
-        todos.removeTask(task);
-        Assertions.assertEquals(5,todos.getTasks().size());
+        Assertions.assertEquals(6, todos.getTasks().size());
+        boolean actual = todos.removeTask(task);
+        Assertions.assertEquals(5, todos.getTasks().size());
+        Assertions.assertTrue(actual);
     }
 
     @DisplayName("Testing removing of the non-existing task")
     @ParameterizedTest
-    @ValueSource(strings = { "Купить продукты", " ", "Oплатить счета" })
+    @ValueSource(strings = {"Купить продукты", "Позвонить бабушке", "Oплатить счета"})
     void removeTaskWhenNoTask(String task) {
-        Assertions.assertEquals(6,todos.getTasks().size());
-
-        todos.removeTask(task);
-        Assertions.assertEquals(6,todos.getTasks().size());
+        Assertions.assertEquals(6, todos.getTasks().size());
+        boolean actual = todos.removeTask(task);
+        Assertions.assertEquals(6, todos.getTasks().size());
+        Assertions.assertFalse(actual);
     }
 
     @DisplayName("Testing getting of a sorted list of all tasks")
@@ -78,12 +79,6 @@ public class TodosTests {
                 "Дописать курсовую Погладить бельё Покормить кота Проверить дневник Стирка Уборка";
         Assertions.assertEquals(expected, todos.getAllTasks());
     }
-
-
-
-
-
-
 
 
 }
