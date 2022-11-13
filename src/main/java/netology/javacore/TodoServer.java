@@ -39,7 +39,9 @@ public class TodoServer {
                         manager.restore();
                     } else {
                         String task = jsonObject.get("task").getAsString();
-                        manager.execute(type, task);
+                        if (!task.isEmpty()) {
+                            manager.execute(type, task);
+                        }
                     }
                     String output = todos.getAllTasks();
                     out.println(output);

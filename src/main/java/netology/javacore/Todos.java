@@ -3,19 +3,16 @@ package netology.javacore;
 import java.util.*;
 
 public class Todos {
-    private List<String> tasks;
-    private final int CAPACITY = 7;
+    private Set<String> tasks;
+    private static final int CAPACITY = 7;
 
     public Todos() {
-        tasks = new ArrayList<>(CAPACITY);
+        tasks = new TreeSet<>();
     }
 
     public boolean addTask(String task) {
         if (tasks.size() < CAPACITY) {
-            if (!tasks.contains(task)) {
-                tasks.add(task);
-                return true;
-            }
+            return tasks.add(task);
         }
         return false;
     }
@@ -24,12 +21,11 @@ public class Todos {
         return tasks.remove(task);
     }
 
-    public List<String> getTasks() {
+    public Set<String> getTasks() {
         return tasks;
     }
 
     public String getAllTasks() {
-        tasks.sort(String::compareTo);
         StringBuilder sb = new StringBuilder();
         tasks.forEach(string -> {
             sb.append(string);
